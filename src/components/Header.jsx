@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -21,13 +21,14 @@ import {
 } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setLogout, setMode } from "../store/authSlice";
+import { setMode } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMenuActive, setIsMenuActive] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const mode = useSelector((state) => state.auth.mode);
   const fullName = user?.name;
@@ -37,9 +38,17 @@ const Header = () => {
     }
   }, [user]);
   return (
-    <FlexBetween className={`bg-background-alt py-2 text-neutral-light`}>
+    <div
+      className={` sm:flex sm:justify-between bg-background-alt py-2 text-neutral-light`}
+      // className={`absolute top-0 left-0 right-0 sm:flex sm:justify-between bg-background-alt py-2 text-neutral-light`}
+    >
       <FlexBetween className="gap-5">
-        <div className="text-2xl font-semibold text-primary-main">
+        <div
+          onClick={() => {
+            navigate(`/home`);
+          }}
+          className="text-2xl font-semibold text-primary-main cursor-pointer"
+        >
           Sociopedia
         </div>
         <div className="hidden md:block">
@@ -55,14 +64,30 @@ const Header = () => {
             </IconButton>
           </FlexBetween>
         </div>
+        <div className="sm:hidden">
+          <IconButton
+            onClick={() => {
+              setIsMenuActive(!isMenuActive);
+            }}
+          >
+            {isMenuActive ? (
+              <Close className="text-neutral-dark" />
+            ) : (
+              <Menu className="text-neutral-dark" />
+            )}
+          </IconButton>
+        </div>
       </FlexBetween>
-      <FlexBetween className={`text-neutral-dark gap-5`}>
+      <FlexBetween
+        className={`${
+          isMenuActive ? "flex-col" : "hidden"
+        } sm:block text-neutral-dark gap-5`}
+      >
         <IconButton
           onClick={() => {
             dispatch(setMode());
           }}
         >
-          {/* {mode === "light" ? <DarkMode  /> : <LightMode sx={{color:""}} />} */}
           {mode === "light" ? (
             <DarkMode
               className="text-neutral-dark "
@@ -75,12 +100,9 @@ const Header = () => {
             />
           )}
         </IconButton>
-        <Message />
-        <NotificationAdd />
-        <Help />
-        {/* <div className="">
-          {fullName}
-        </div> */}
+        {/* <Message /> */}
+        {/* <NotificationAdd /> */}
+        {/* <Help /> */}
         <FormControl variant="standard" value={fullName}>
           <div
             className="*:bg-neutral-light 
@@ -103,12 +125,12 @@ const Header = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+              <MenuItem onClick={() => navigate("/logout")}>Log Out</MenuItem>
             </Select>
           </div>
         </FormControl>
       </FlexBetween>
-    </FlexBetween>
+    </div>
   );
 };
 

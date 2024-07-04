@@ -21,6 +21,7 @@ const authSlice = createSlice({
     setLogout: (state, action) => {
       state.user = null;
       state.token = null;
+      state.posts = [];
     },
     setFriends: (state, action) => {
       if (state.user) {
@@ -33,14 +34,26 @@ const authSlice = createSlice({
       state.posts = action.payload.posts;
     },
     setPost: (state, action) => {
-      return state.posts.map((post) => {
+      state.posts = state.posts.map((post) => {
         if (post._id === action.payload.post_id) return action.payload.post;
         return post;
       });
     },
+    removePost: (state, action) => {
+      state.posts = state.posts.filter(
+        (post) => post._id !== action.payload.post_id
+      );
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
-  authSlice.actions;
+export const {
+  setMode,
+  setLogin,
+  setLogout,
+  setFriends,
+  setPosts,
+  setPost,
+  removePost,
+} = authSlice.actions;
 export default authSlice.reducer;

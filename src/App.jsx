@@ -1,7 +1,6 @@
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-import Header from "./components/Header";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -11,6 +10,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setMode } from "./store/authSlice";
 import { useEffect } from "react";
+import AlertSystem from "./components/AlertSystem";
+import Logout from "./pages/Logout";
+import Settings from "./pages/Settings";
+import Header from "./components/Header";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,11 +31,14 @@ function App() {
       document.body.className = "light";
       console.log("Mode selected by system");
     }
-  }, [mode]);
+  }, [mode, isAuth]);
+
   return (
     <>
-      <div className="app bg-background-default *:px-24">
+      <div className="app bg-background-default min-h-full *:px-3 sm:*:px-5 md:*:px-10 lg:*:px-16">
+        <AlertSystem />
         <Router>
+          {isAuth && <Header />}
           <Routes>
             <Route
               path="/"
@@ -42,10 +48,13 @@ function App() {
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to={"/"} />}
             />
+            <Route path="/profile/editprofile" element={<Settings />} />
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to={"/"} />}
             />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </Router>
       </div>

@@ -10,11 +10,12 @@ const LoginPage = () => {
   const mode = useSelector((state) => state.auth.mode);
   return (
     <>
-      <div className="relative text-center mb-8 bg-background-alt text-primary-main font-semibold text-2xl py-4">
+      <div className="relative z-20  text-center  mb-8 bg-background-alt text-primary-main font-semibold text-2xl py-4">
         <div>Sociopedia</div>
         <div className="absolute right-2 top-0 bottom-0 flex ">
           <IconButton
             onClick={() => {
+              console.log("Mode selected by user" + mode);
               dispatch(setMode());
             }}
           >
@@ -32,7 +33,7 @@ const LoginPage = () => {
           </IconButton>
         </div>
       </div>
-      <div className=" text-neutral-main flex justify-center  ">
+      <div className="z-10 absolute left-0 right-0 top-0 bottom-0 items-center text-neutral-main flex justify-center  ">
         <div className="w-full max-w-[800px] bg-background-alt px-10 py-6 rounded-2xl">
           <div className="text-neutral-dark">
             Welcome to Sociopedia, the Social Media for Sociopaths!
