@@ -57,7 +57,7 @@ const CreatePost = ({ id, name, picturePath }) => {
       }}
       className="w-full px-5 py-5 bg-background-alt rounded-xl mb-5"
     >
-      <form onSubmit={handlePost}>
+      <form data-netlify="true" onSubmit={handlePost}>
         <div className="flex gap-5">
           <FlexBetween>
             <img
