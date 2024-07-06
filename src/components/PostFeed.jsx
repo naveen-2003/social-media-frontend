@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import { useSelector, useDispatch } from "react-redux";
 import { setFriends, setPosts } from "../store/authSlice";
+import { apiFetch } from "../utils/apiFetch";
 
 const PostFeed = ({ userId, isViewProfile }) => {
   const posts = useSelector((state) => state.auth.posts);
@@ -12,10 +13,10 @@ const PostFeed = ({ userId, isViewProfile }) => {
   const [postModified, setPostModified] = useState(false);
   const [page, setPage] = useState(0);
   const getPosts = async () => {
-    const response = await fetch(
+    const response = await apiFetch(
       isViewProfile
-        ? `/api/posts/${userId}/posts?page=${page}`
-        : `/api/posts?page=${page}`,
+        ? `/posts/${userId}/posts?page=${page}`
+        : `/posts?page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

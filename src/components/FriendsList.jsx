@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setFriends } from "../store/authSlice";
 import Friend from "./Friend";
+import { apiFetch } from "../utils/apiFetch";
 
 const FriendsList = ({ userId, friends }) => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ const FriendsList = ({ userId, friends }) => {
   // const [viewFriends, setViewFriends] = useState([]);
   const getFriends = async () => {
     if (token) {
-      const response = await fetch(`/api/users/${userId}/friends`, {
+      const response = await apiFetch(`/users/${userId}/friends`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + token,

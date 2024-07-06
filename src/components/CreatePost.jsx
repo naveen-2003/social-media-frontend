@@ -11,6 +11,7 @@ import {
 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { useAlert } from "./AlertContext";
+import { apiFetch } from "../utils/apiFetch";
 
 const CreatePost = ({ id, name, picturePath }) => {
   const { showAlert } = useAlert();
@@ -32,7 +33,7 @@ const CreatePost = ({ id, name, picturePath }) => {
     if (file) {
       formData.append("file", file);
     }
-    const response = await fetch("/api/posts", {
+    const response = await apiFetch(`/posts`, {
       method: "POST",
       body: file
         ? formData

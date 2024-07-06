@@ -15,6 +15,7 @@ import {
 import { Menu, MenuItem } from "@mui/base";
 import { IconButton, ClickAwayListener } from "@mui/material";
 import { useAlert } from "./AlertContext";
+import { apiFetch } from "../utils/apiFetch";
 
 const Post = ({ post, setPostModified }) => {
   if (!post) return null;
@@ -27,7 +28,7 @@ const Post = ({ post, setPostModified }) => {
   const { showAlert } = useAlert();
   const deletePost = async () => {
     setIsMenuActive(false);
-    const response = await fetch(`/api/posts/${post?._id}`, {
+    const response = await apiFetch(`/posts/${post?._id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -47,7 +48,7 @@ const Post = ({ post, setPostModified }) => {
   };
 
   const handleLike = async () => {
-    const response = await fetch(`/api/posts/${post?._id}/like`, {
+    const response = await apiFetch(`/posts/${post?._id}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -61,7 +62,7 @@ const Post = ({ post, setPostModified }) => {
   };
 
   const handleComment = async () => {
-    const response = await fetch(`/api/posts/${post?._id}/comment`, {
+    const response = await apiFetch(`/posts/${post?._id}/comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +78,7 @@ const Post = ({ post, setPostModified }) => {
   };
 
   const deleteComment = async ({ comment, commentedUser }) => {
-    const response = await fetch(`/api/posts/${post?._id}/comment/`, {
+    const response = await apiFetch(`/posts/${post?._id}/comment/`, {
       method: "DELETE",
       body: JSON.stringify({ comment, commentedUser }),
       headers: {

@@ -6,6 +6,7 @@ import { Edit, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../store/authSlice";
 import { useAlert } from "./AlertContext";
+import { apiFetch } from "../utils/apiFetch";
 
 const Form = () => {
   const [isLoginPage, setIsLoginPage] = useState(true); //true
@@ -34,7 +35,7 @@ const Form = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     formData.append("picture", file);
-    const response = await fetch("/api/auth/register", {
+    const response = await apiFetch("/auth/register", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -56,7 +57,7 @@ const Form = () => {
 
   const sendOTP = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/auth/sendotp", {
+    const response = await apiFetch("/auth/sendotp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -79,7 +80,7 @@ const Form = () => {
 
   const verifyOTP = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/auth/verifyotp", {
+    const response = await apiFetch("/auth/verifyotp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +105,7 @@ const Form = () => {
   };
 
   const login = async (e) => {
-    const response = await fetch("/api/auth/login", {
+    const response = await apiFetch("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

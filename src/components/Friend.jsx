@@ -4,6 +4,7 @@ import { PersonAddAlt1, PersonRemoveAlt1 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../utils/apiFetch";
 
 const Friend = ({ friendId, userPicturePath, location, name, friends }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Friend = ({ friendId, userPicturePath, location, name, friends }) => {
     userFriends?.find((friend) => friend._id === friendId);
   const addRemoveFriend = async () => {
     if (token) {
-      const response = await fetch(`/api/users/${id}/${friendId}`, {
+      const response = await apiFetch(`/users/${id}/${friendId}`, {
         method: "PATCH",
         headers: {
           Authorization: "Bearer " + token,

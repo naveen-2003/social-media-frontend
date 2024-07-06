@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import UserWidget from "../components/UserWidget";
 import PostFeed from "../components/PostFeed";
 import FriendsList from "../components/FriendsList";
+import { apiFetch } from "../utils/apiFetch";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -11,7 +12,7 @@ const ProfilePage = () => {
   const [friends, setFriends] = useState([]);
   const token = useSelector((state) => state.auth.token);
   const getFriends = async () => {
-    const friends = await fetch(`/api/users/${userId}/friends`, {
+    const friends = await apiFetch(`/users/${userId}/friends`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,7 +22,7 @@ const ProfilePage = () => {
   };
 
   const getUser = async () => {
-    const response = await fetch(`/api/users/${userId}`, {
+    const response = await apiFetch(`/users/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

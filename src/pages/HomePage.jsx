@@ -7,6 +7,7 @@ import PostFeed from "../components/PostFeed";
 import FriendsList from "../components/FriendsList";
 import { IconButton, Tooltip } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
+import { apiFetch } from "../utils/apiFetch";
 
 const HomePage = () => {
   const [user, setUser] = useState({});
@@ -15,7 +16,7 @@ const HomePage = () => {
   );
   const token = useSelector((state) => state.auth.token);
   const getUser = async () => {
-    const response = await fetch(`/api/users/${id}`, {
+    const response = await apiFetch(`/users/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
