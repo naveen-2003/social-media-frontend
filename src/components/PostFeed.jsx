@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFriends, setPosts } from "../store/authSlice";
 import { apiFetch } from "../utils/apiFetch";
 
-const PostFeed = ({ userId, isViewProfile }) => {
+const PostFeed = ({ userId, isViewProfile = false }) => {
   const posts = useSelector((state) => state.auth.posts);
   const token = useSelector((state) => state.auth.token);
 

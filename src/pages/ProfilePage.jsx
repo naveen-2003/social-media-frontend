@@ -56,9 +56,6 @@ const ProfilePage = () => {
         <div className=" sm:block w-full mb-6 sm:w-1/3 md:w-1/4">
           <UserWidget
             user={user}
-            // id={userId}
-            // name={`${user?.firstName} ${user?.lastName}`}
-            // picturePath={user?.picturePath}
           />
         </div>
         <div className="w-full sm:w-2/3 lg:2/4">

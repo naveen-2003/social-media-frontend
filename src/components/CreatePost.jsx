@@ -19,7 +19,6 @@ const CreatePost = ({ id, name, picturePath }) => {
   const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const [includeFile, setInclueFile] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles) => {
       setFile(acceptedFiles[0]);
@@ -74,7 +73,7 @@ const CreatePost = ({ id, name, picturePath }) => {
           ></textarea>
         </div>
         {includeFile && (
-          <div className="col-span-4 border rounded-md border-neutral-mediumMain/95 cursor-pointer px-3 py-2 mt-3">
+          <div className="col-span-4 border rounded-md border-neutral-mediumMain/95 cursor-pointer mt-3">
             <div {...getRootProps()} className="cursor-pointer">
               <input {...getInputProps()} />
               {isDragActive ? (
@@ -84,7 +83,7 @@ const CreatePost = ({ id, name, picturePath }) => {
                   <p>{file.name}</p>
                 </div>
               ) : (
-                <p className="text-neutral-dark/50 text-sm ">
+                <p className="text-neutral-dark/50 text-sm px-3 py-2 ">
                   Drag 'n' drop some files here, or click to select files
                 </p>
               )}

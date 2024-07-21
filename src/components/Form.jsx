@@ -13,6 +13,7 @@ const Form = () => {
   const [formData, setFormData] = useState({}); //{}
   const [isOTPSent, setIsOTPSent] = useState(false); //false
   const [isVerified, setIsVerified] = useState(false); //false
+  const [isResetPassword, setIsResetPassword] = useState(false);
   const [token, setToken] = useState(null);
   const { showAlert } = useAlert();
   const dispatch = useDispatch();
@@ -104,6 +105,22 @@ const Form = () => {
     showAlert("Server Error", "error");
   };
 
+  const sendResetLink = async (e) => {
+    const response = await apiFetch("/auth/sendresetlink", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      e.target.reset();
+      setFormData({});
+      setIsResetPassword(false);
+      showAlert(data.msg, "success");
+      return;
+    }
+    showAlert(data.msg, "info");
+  };
   const login = async (e) => {
     const response = await apiFetch("/auth/login", {
       method: "POST",
@@ -129,7 +146,9 @@ const Form = () => {
     e.preventDefault();
     console.log(formData);
     isLoginPage
-      ? login(e)
+      ? isResetPassword
+        ? sendResetLink(e)
+        : login(e)
       : !isOTPSent
       ? sendOTP(e)
       : !isVerified
@@ -141,7 +160,7 @@ const Form = () => {
       <form
         data-netlify="true"
         onSubmit={handleSubmit}
-        className="grid grid-flow-row grid-cols-4 gap-x-4 gap-y-3 text-neutral-dark"
+        className="grid grid-flow-row grid-cols-4 gap-x-4 gap-y-3 text-neutral-dark [&_.custom-input]:bg-background-alt  [&_.input-label]:bg-background-alt"
       >
         {!isLoginPage && isOTPSent && isVerified && (
           <>
@@ -221,7 +240,7 @@ const Form = () => {
             label="Email Address"
           />
         )}
-        {isLoginPage ? (
+        {isLoginPage && !isResetPassword ? (
           <CustomInput
             formData={formData}
             handleChange={handleChange}
@@ -258,7 +277,9 @@ const Form = () => {
           className="mb-4 bg-primary-main col-span-4 px-3 py-2 text-background-default font-semibold hover:bg-primary-main/50 hover:text-background-default"
         >
           {isLoginPage
-            ? "Login"
+            ? isResetPassword
+              ? "Send Reset Link"
+              : "Login"
             : !isOTPSent
             ? "Send OTP"
             : !isVerified
@@ -266,16 +287,28 @@ const Form = () => {
             : "Register"}
         </button>
       </form>
-      <p
-        onClick={() => {
-          setIsLoginPage(!isLoginPage);
-        }}
-        className="text-primary-main underline text-sm cursor-pointer"
-      >
-        {isLoginPage
-          ? "Not a user? Click here to register!!"
-          : "Already signed up? Click here to Login!!"}
-      </p>
+      <div className="flex justify-between">
+        <p
+          onClick={() => {
+            setIsLoginPage(!isLoginPage);
+          }}
+          className="text-primary-main underline text-sm cursor-pointer"
+        >
+          {isLoginPage
+            ? "Not a user? Click here to register!!"
+            : "Already signed up? Click here to Login!!"}
+        </p>
+        {isLoginPage && (
+          <p
+            onClick={() => {
+              setIsResetPassword(!isResetPassword);
+            }}
+            className="text-primary-main underline text-sm cursor-pointer"
+          >
+            {isResetPassword ? "Go to Login" : "Forgot Password?"}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

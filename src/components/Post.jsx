@@ -117,7 +117,7 @@ const Post = ({ post, setPostModified }) => {
             >
               <MoreHoriz fontSize="medium" />
             </IconButton>
-            <div>
+            <div className="z-50">
               {isMenuActive && (
                 <ClickAwayListener onClickAway={() => setIsMenuActive(false)}>
                   <Menu className="absolute right-0 bg-neutral-light text-neutral-dark font-light rounded-md">

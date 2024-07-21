@@ -14,6 +14,7 @@ import AlertSystem from "./components/AlertSystem";
 import Logout from "./pages/Logout";
 import Settings from "./pages/Settings";
 import Header from "./components/Header";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,10 +36,10 @@ function App() {
 
   return (
     <>
-      <div className="app bg-background-default min-h-full *:px-3 sm:*:px-5 md:*:px-10 lg:*:px-16">
+      <div className="app flex flex-col bg-background-default min-h-full *:px-3 sm:*:px-5 md:*:px-10 lg:*:px-16">
         <AlertSystem />
         <Router>
-          {isAuth && <Header />}
+          <Header />
           <Routes>
             <Route
               path="/"
@@ -48,11 +49,12 @@ function App() {
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to={"/"} />}
             />
-            <Route path="/profile/editprofile" element={<Settings />} />
+            <Route path="/profile" element={<Settings />} />
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to={"/"} />}
             />
+            <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>

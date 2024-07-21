@@ -8,13 +8,15 @@ import FriendsList from "../components/FriendsList";
 import { IconButton, Tooltip } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import { apiFetch } from "../utils/apiFetch";
+import { setUser } from "../store/authSlice";
 
 const HomePage = () => {
-  const [user, setUser] = useState({});
+  const [userData, setUserData] = useState({});
   const { id, name, picturePath, friends } = useSelector(
     (state) => state.auth.user
   );
   const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
   const getUser = async () => {
     const response = await apiFetch(`/users/${id}`, {
       method: "GET",
@@ -23,7 +25,14 @@ const HomePage = () => {
       },
     });
     const data = await response.json();
-    setUser(data);
+    setUserData(data);
+    dispatch(
+      setUser({
+        name: `${data.firstName} ${data.lastName}`,
+        friends: data.firends,
+        picturePath: data.picturePath,
+      })
+    );
     // console.log(data);
   };
   useEffect(() => {
@@ -49,7 +58,7 @@ const HomePage = () => {
       <div className=" flex text-neutral-main gap-5 mt-8">
         <div className="hidden sm:block w-1/3 md:w-1/4">
           <UserWidget
-            user={user}
+            user={userData}
             // id={id}
             // name={name}
             // picturePath={picturePath}
@@ -60,13 +69,13 @@ const HomePage = () => {
             onClick={() => setIsCreatePostActive(!isCreatePostActive)}
             className={`${
               isCreatePostActive
-                ? "fixed left-0 right-0  bottom-0 top-0 px-5 flex justify-center items-center w-screen h-screen bg-black/80"
+                ? "fixed left-0 right-0  bottom-0 top-0 z-50 px-5 flex justify-center items-center w-screen h-screen bg-black/80"
                 : "hidden sm:block"
             }`}
           >
             <CreatePost id={id} name={name} picturePath={picturePath} />
           </div>
-          <PostFeed userId={id} />
+          <PostFeed userId={id} isViewProfile={false} />
         </div>
         <div className="hidden lg:block w-1/4">
           <FriendsList userId={id} friends={friends} />
